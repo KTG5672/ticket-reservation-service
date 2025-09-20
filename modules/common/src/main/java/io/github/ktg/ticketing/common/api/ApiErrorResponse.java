@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * 공통 에러 API 응답 클래스
+ */
 @Getter
 @Builder
 @AllArgsConstructor
