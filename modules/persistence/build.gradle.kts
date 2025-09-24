@@ -14,4 +14,7 @@ dependencies {
     implementation(project(":modules:common"))
     implementation(project(":modules:domain"))
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("com.h2database:h2")
 }
