@@ -43,7 +43,7 @@ CREATE TABLE event_seats (
     status VARCHAR(255),
     zone VARCHAR(10),
     no INT,
-    price DECIMAL(10,2),
+    price INT,
     created_by VARCHAR(40),
     updated_by VARCHAR(40),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -66,7 +66,7 @@ CREATE TABLE reservation_seats (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     reservation_id BIGINT NOT NULL,
     seat_id BIGINT NOT NULL,
-    price DECIMAL(10,2)
+    price INT
 );
 
 -- 결제
@@ -74,7 +74,7 @@ CREATE TABLE payments (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     reservation_id BIGINT NOT NULL,
     user_id VARCHAR(40) NOT NULL,
-    amount DECIMAL(10,2),
+    amount INT,
     status VARCHAR(10),
     payment_at DATETIME,
     created_by VARCHAR(40),
@@ -87,7 +87,7 @@ CREATE TABLE payments (
 CREATE TABLE payment_histories (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     payment_id BIGINT NOT NULL,
-    amount DECIMAL(10,2),
+    amount INT,
     status VARCHAR(10),
     payment_at DATETIME,
     fail_reason VARCHAR(255),
