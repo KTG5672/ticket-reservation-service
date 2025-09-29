@@ -1,4 +1,4 @@
-package io.github.ktg.ticketing.entity.config;
+package io.github.ktg.ticketing.config;
 
 import io.github.ktg.ticketing.common.security.CurrentUserProvider;
 import java.util.Optional;
