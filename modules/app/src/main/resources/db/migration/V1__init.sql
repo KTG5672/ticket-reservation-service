@@ -39,7 +39,7 @@ CREATE TABLE event_schedules (
 -- 이벤트 좌석
 CREATE TABLE event_seats (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    concert_schedule_id BIGINT NOT NULL,
+    event_schedule_id BIGINT NOT NULL,
     status VARCHAR(255),
     zone VARCHAR(10),
     no INT,
