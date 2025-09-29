@@ -9,12 +9,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.Getter;
 
-@Table(name = "reservation_seats")
+@Table(name = "event_schedules")
 @Entity
 @Getter
-public class ReservationSeatJpaEntity {
+public class EventScheduleJpaEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +23,13 @@ public class ReservationSeatJpaEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id")
-    private ReservationJpaEntity reservation;
+    @JoinColumn(name = "event_id")
+    private EventJpaEntity event;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seat_id")
-    private EventSeatJpaEntity seat;
+    @Column(name = "event_start_at")
+    private LocalDateTime eventStartAt;
 
-    @Column(name = "price", nullable = false)
-    private int price;
+    @Column(name = "user_booking_limit")
+    private Integer userBookingLimit;
 
 }
