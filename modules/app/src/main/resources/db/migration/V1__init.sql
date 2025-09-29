@@ -15,7 +15,7 @@ CREATE TABLE events (
     title VARCHAR(255) NOT NULL,
     poster_url VARCHAR(255),
     place VARCHAR(255),
-    event_info TEXT,
+    event_info MEDIUMTEXT,
     ticket_open_at DATETIME,
     ticket_close_at DATETIME,
     created_by VARCHAR(40),
