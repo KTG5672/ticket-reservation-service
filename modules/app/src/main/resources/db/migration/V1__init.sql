@@ -3,6 +3,8 @@ CREATE TABLE users (
     id VARCHAR(40) NOT NULL PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(60) NOT NULL,
+    created_by VARCHAR(40),
+    updated_by VARCHAR(40),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -13,7 +15,7 @@ CREATE TABLE events (
     title VARCHAR(255) NOT NULL,
     poster_url VARCHAR(255),
     place VARCHAR(255),
-    event_info TEXT,
+    event_info MEDIUMTEXT,
     ticket_open_at DATETIME,
     ticket_close_at DATETIME,
     created_by VARCHAR(40),
@@ -37,11 +39,11 @@ CREATE TABLE event_schedules (
 -- 이벤트 좌석
 CREATE TABLE event_seats (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    concert_schedule_id BIGINT NOT NULL,
+    event_schedule_id BIGINT NOT NULL,
     status VARCHAR(255),
     zone VARCHAR(10),
     no INT,
-    price DECIMAL(10,2),
+    price INT,
     created_by VARCHAR(40),
     updated_by VARCHAR(40),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -64,7 +66,7 @@ CREATE TABLE reservation_seats (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     reservation_id BIGINT NOT NULL,
     seat_id BIGINT NOT NULL,
-    price DECIMAL(10,2)
+    price INT
 );
 
 -- 결제
@@ -72,7 +74,7 @@ CREATE TABLE payments (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     reservation_id BIGINT NOT NULL,
     user_id VARCHAR(40) NOT NULL,
-    amount DECIMAL(10,2),
+    amount INT,
     status VARCHAR(10),
     payment_at DATETIME,
     created_by VARCHAR(40),
@@ -85,7 +87,7 @@ CREATE TABLE payments (
 CREATE TABLE payment_histories (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     payment_id BIGINT NOT NULL,
-    amount DECIMAL(10,2),
+    amount INT,
     status VARCHAR(10),
     payment_at DATETIME,
     fail_reason VARCHAR(255),
