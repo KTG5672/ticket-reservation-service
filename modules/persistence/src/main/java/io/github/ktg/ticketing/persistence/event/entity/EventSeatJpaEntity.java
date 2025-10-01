@@ -1,6 +1,8 @@
-package io.github.ktg.ticketing.entity;
+package io.github.ktg.ticketing.persistence.event.entity;
 
-import io.github.ktg.ticketing.domain.EventSeatStatus;
+import io.github.ktg.ticketing.domain.event.EventSeatStatus;
+import io.github.ktg.ticketing.persistence.BaseEntity;
+import io.github.ktg.ticketing.persistence.reservation.entity.ReservationSeatJpaEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

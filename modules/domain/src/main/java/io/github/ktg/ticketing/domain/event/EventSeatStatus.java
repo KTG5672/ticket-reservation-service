@@ -1,4 +1,4 @@
-package io.github.ktg.ticketing.domain;
+package io.github.ktg.ticketing.domain.event;
 
 public enum EventSeatStatus {
     AVAILABLE, HELD, SOLD

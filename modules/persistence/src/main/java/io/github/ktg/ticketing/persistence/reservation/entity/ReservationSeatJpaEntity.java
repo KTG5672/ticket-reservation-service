@@ -1,5 +1,6 @@
-package io.github.ktg.ticketing.entity;
+package io.github.ktg.ticketing.persistence.reservation.entity;
 
+import io.github.ktg.ticketing.persistence.event.entity.EventSeatJpaEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,13 +10,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.Getter;
 
-@Table(name = "event_schedules")
+@Table(name = "reservation_seats")
 @Entity
 @Getter
-public class EventScheduleJpaEntity extends BaseEntity {
+public class ReservationSeatJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,13 +23,14 @@ public class EventScheduleJpaEntity extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
-    private EventJpaEntity event;
+    @JoinColumn(name = "reservation_id")
+    private ReservationJpaEntity reservation;
 
-    @Column(name = "event_start_at")
-    private LocalDateTime eventStartAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seat_id")
+    private EventSeatJpaEntity seat;
 
-    @Column(name = "user_booking_limit")
-    private Integer userBookingLimit;
+    @Column(name = "price", nullable = false)
+    private int price;
 
 }

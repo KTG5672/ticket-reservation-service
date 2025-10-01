@@ -1,6 +1,6 @@
-package io.github.ktg.ticketing.entity;
+package io.github.ktg.ticketing.persistence.payment.entity;
 
-import io.github.ktg.ticketing.domain.PaymentStatus;
+import io.github.ktg.ticketing.domain.payment.PaymentStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,21 +12,18 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
-@Table(name = "payments")
+@Table(name = "payment_histories")
 @Entity
 @Getter
-public class PaymentJpaEntity extends BaseEntity {
+public class PaymentHistoryJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "reservation_id", nullable = false)
-    private Long reservationId;
-
-    @Column(name = "user_id", nullable = false)
-    private String userId;
+    @Column(name = "payment_id", nullable = false)
+    private Long paymentId;
 
     @Column(name = "amount", nullable = false)
     private int amount;
@@ -38,4 +35,6 @@ public class PaymentJpaEntity extends BaseEntity {
     @Column(name = "payment_at", nullable = false)
     private LocalDateTime paymentAt;
 
+    @Column(name = "fail_reason")
+    private String failReason;
 }

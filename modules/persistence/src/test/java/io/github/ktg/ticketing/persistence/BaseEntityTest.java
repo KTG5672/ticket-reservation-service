@@ -1,8 +1,8 @@
-package io.github.ktg.ticketing.entity;
+package io.github.ktg.ticketing.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.ktg.ticketing.config.JpaAuditingConfig;
+import io.github.ktg.ticketing.persistence.config.JpaAuditingConfig;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
