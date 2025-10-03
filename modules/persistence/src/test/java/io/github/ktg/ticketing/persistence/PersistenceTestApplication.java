@@ -1,4 +1,4 @@
-package io.github.ktg.ticketing.entity;
+package io.github.ktg.ticketing.persistence;
 
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

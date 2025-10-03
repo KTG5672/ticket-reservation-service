@@ -1,4 +1,4 @@
-package io.github.ktg.ticketing.entity;
+package io.github.ktg.ticketing.persistence;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

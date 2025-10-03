@@ -1,4 +1,4 @@
-package io.github.ktg.ticketing.entity;
+package io.github.ktg.ticketing.persistence;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

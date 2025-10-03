@@ -1,5 +1,6 @@
-package io.github.ktg.ticketing.entity;
+package io.github.ktg.ticketing.persistence.user.entity;
 
+import io.github.ktg.ticketing.persistence.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

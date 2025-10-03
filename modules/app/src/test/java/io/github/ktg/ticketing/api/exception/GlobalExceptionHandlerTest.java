@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.ktg.ticketing.app.api.exception.ErrorCodeHttpStatusMapper;
 import io.github.ktg.ticketing.common.api.ApiErrorResponse;
 import io.github.ktg.ticketing.common.exception.CommonErrorCode;
 import org.junit.jupiter.api.BeforeEach;
