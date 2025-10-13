@@ -1,10 +1,11 @@
 package io.github.ktg.ticketing.domain.user.port.out;
 
 import io.github.ktg.ticketing.domain.user.model.User;
+import java.util.Optional;
 
 public interface UserRepository {
 
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
     User save(User user);
 
 }
