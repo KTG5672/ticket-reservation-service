@@ -9,10 +9,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 @DataJpaTest
 @Import(JpaAuditingConfig.class)
-class BaseEntityTest {
+@ActiveProfiles("test")
+class BaseEntityTest extends TestContainerForMySQL{
 
     @PersistenceContext
     EntityManager entityManager;
