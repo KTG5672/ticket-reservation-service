@@ -13,8 +13,12 @@ tasks.named<Jar>("jar") {
 dependencies {
     implementation(project(":modules:common"))
     implementation(project(":modules:domain"))
+
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    runtimeOnly("com.mysql:mysql-connector-j")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("com.h2database:h2")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:mysql")
 }
