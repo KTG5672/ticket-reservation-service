@@ -10,6 +10,11 @@ import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Open API Config 클래스
+ * - API 인증 방법 명세 (JWT)
+ * - 도메인 별 그룹 정의
+ */
 @OpenAPIDefinition(
     info = @Info(title = "Ticket Reservation Service API", version = "v1"),
     security = {@SecurityRequirement(name = "bearerAuth")}
