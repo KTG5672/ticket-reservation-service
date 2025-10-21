@@ -1,6 +1,6 @@
-# In-Memory DB(H2) → Testcontainers(MySQL) 전환
+## In-Memory DB(H2) → Testcontainers(MySQL) 전환
 
-## 📘 개요
+### 개요
 - Spring Boot 테스트 환경에서는 `H2 Database` 같은 **In-Memory DB**를 사용해 테스트를 쉽게 실행할 수 있음  
 하지만 운영 환경이 `MySQL`인 경우, **SQL 방언·콜레이션·락 메커니즘 차이**로 인해  
 테스트 결과가 실제 서비스와 다르게 동작할 수 있음
@@ -9,7 +9,7 @@
 
 ---
 
-## In-Memory DB(H2) 사용 시 발생할 수 있는 문제
+### In-Memory DB(H2) 사용 시 발생할 수 있는 문제
 
 | 구분 | MySQL (운영) | H2 (테스트) | 차이점 / 문제점 |
 |------|---------------|--------------|----------------|
@@ -22,9 +22,9 @@
 
 ---
 
-## H2 Database, MySQL 차이 사례
+### H2 Database, MySQL 차이 사례
 
-### 1️⃣ Gap Lock 미지원
+#### 1️⃣ Gap Lock 미지원
 
 MySQL에서는 아래 쿼리를 실행하면 `(5, 10)` 구간 전체에 Gap Lock이 설정되어 INSERT가 차단됩니다.  
 H2에서는 이 락이 존재하지 않음
@@ -43,7 +43,7 @@ FOR UPDATE;
 
 ---
 
-### 2️⃣ 한글 검색 및 정렬 차이
+#### 2️⃣ 한글 검색 및 정렬 차이
 
 #### LIKE 검색
 
@@ -65,11 +65,11 @@ FOR UPDATE;
 
 ---
 
-## 해결 방안
-### Testcontainers 란?
+### 해결 방안
+#### Testcontainers 란?
 - Docker 컨테이너에서 실행 가능한 데이터베이스, 메시지 브로커, 웹 브라우저 등을 일회용 인스턴스로 제공 해주는 오픈 소스 라이브러리
 - Spring Boot, Junit 환경에서 편리하게 컨테이너를 조작 할 수 있는 인터페이스 제공 (@Testcontainers, @Container) 
-### JUnit 에서 Testcontainers 적용
+#### JUnit 에서 Testcontainers 적용
 
 **Gradle 의존성**
 ```
@@ -120,7 +120,7 @@ spring:
 ```
 ---
 
-## ✅ 결론
+### 결론
 
 - H2는 빠르고 편리하지만, Testcontainers를 사용하여 운영 환경과 테스트 환경을 맞춰 테스트 신뢰성을 높일 수 있음 
 - 단위 테스트는 Mock 으로 대체 가능 하지만 통합 테스트 시 DB 연결 및 동작을 검증 가능
@@ -128,7 +128,7 @@ spring:
 
 ---
 
-## 📚 참고 자료
+### 참고 자료
 - [Testcontainers MySQL 공식 문서](https://java.testcontainers.org/modules/databases/mysql/)
 - [H2 Database Features](https://www.h2database.com/html/main.html)
 - [MySQL 8.0 Locking Reads 공식 문서](https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html)
