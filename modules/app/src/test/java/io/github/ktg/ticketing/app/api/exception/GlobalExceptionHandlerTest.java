@@ -1,12 +1,11 @@
-package io.github.ktg.ticketing.api.exception;
+package io.github.ktg.ticketing.app.api.exception;
 
-import static io.github.ktg.ticketing.api.exception.GlobalExceptionTestController.TestErrorCode.TEST_ERROR;
+import static io.github.ktg.ticketing.app.api.exception.GlobalExceptionTestController.TestErrorCode.TEST_ERROR;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.ktg.ticketing.app.api.exception.ErrorCodeHttpStatusMapper;
 import io.github.ktg.ticketing.common.api.ApiErrorResponse;
 import io.github.ktg.ticketing.common.exception.CommonErrorCode;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package io.github.ktg.ticketing.api.exception;
+package io.github.ktg.ticketing.app.api.exception;
 
 import io.github.ktg.ticketing.common.exception.BusinessException;
 import io.github.ktg.ticketing.common.exception.ErrorCode;
