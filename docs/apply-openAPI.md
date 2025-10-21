@@ -33,6 +33,8 @@ paths:
                 items:
                   type: string
 ```
+---
+
 ### springdoc-openapi
 - Spring Boot 내부 핸들러(Controller)를 OpenAPI 스펙으로 생성 해주는 오픈소스 라이브러리
 - 표준 명세는 /v3/api-docs URL 을 통해 확인 가능
@@ -58,6 +60,8 @@ paths:
                 Swagger UI
       /swagger-ui/index.html 에서 시각화
 ```
+
+---
 
 ### springdoc-openapi 적용
 
@@ -107,13 +111,21 @@ public class AuthController {
 ![img.png](img/swagger-ui-sample1.png)
 ![img.png](img/swagger-ui-sample2.png)
 
+---
+
 ### 트러블 슈팅
 - 버전 미스매치로 부팅 오류
   - Spring Boot 3.3.x ↔ springdoc 2.8.x 조합에서 LiteWebJarsResourceResolver 관련 NoClassDefFoundError 발생
   ![img.png](img/springdocs-version-mismatch.png)
-  - 해결: springdoc 버전을 2.6.0 으로 낮춰 적용
+  - **해결: springdoc 버전을 2.6.0 으로 낮춰 적용**
 - 전이 의존성 취약점(CVE) 경고
   - springdoc 2.6.0 버전 내의 commons-lang3:3.14.0 버전의 취약점 경고 (CVE-2025-48924)
   - CVE 취약점 개요는 ClassUtils.getClass(...) 에서 입력값이 매우 길 경우 재귀가 과도하게 발생하여 StackOverFlowError 위험이 있음
   ![img.png](img/commons-lang3-CVE2025-48924.png)
-  - 해결: commons-lang3:3.18.0 버전으로 업그레이드
+  - **해결: commons-lang3:3.18.0 버전으로 업그레이드**
+
+---
+
+### 참고 자료
+- [Swagger IO Open API 3.0 Specification](https://swagger.io/docs/specification/v3_0/about/)
+- [spirngdocs-openapi 공식문서](https://springdoc.org/)
