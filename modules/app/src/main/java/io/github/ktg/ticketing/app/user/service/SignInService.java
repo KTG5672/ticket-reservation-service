@@ -3,6 +3,7 @@ package io.github.ktg.ticketing.app.user.service;
 import io.github.ktg.ticketing.domain.user.exception.EmailNotValidException;
 import io.github.ktg.ticketing.domain.user.exception.PasswordNotValidException;
 import io.github.ktg.ticketing.domain.user.exception.UserErrorCode;
+import io.github.ktg.ticketing.domain.user.model.Password;
 import io.github.ktg.ticketing.domain.user.model.User;
 import io.github.ktg.ticketing.domain.user.port.in.SignInCommand;
 import io.github.ktg.ticketing.domain.user.port.in.SignInResult;
@@ -35,13 +36,14 @@ public class SignInService implements SignInUseCase {
      */
     @Override
     public SignInResult signIn(SignInCommand command) {
-        String email = command.email();
-        String password = command.password();
+        String inputEmail = command.email();
+        String inputPassword = command.password();
+        Password password = new Password(inputPassword);
 
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(inputEmail)
             .orElseThrow(() -> new EmailNotValidException(UserErrorCode.EMAIL_NOT_FOUND));
 
-        if (!passwordEncoderPort.matches(password, user.getPassword().value())) {
+        if (!passwordEncoderPort.matches(password, user.getPassword())) {
             throw new PasswordNotValidException(UserErrorCode.PASSWORD_NOT_MATCHED);
         }
 
