@@ -8,38 +8,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.ktg.ticketing.common.api.ApiErrorResponse;
 import io.github.ktg.ticketing.common.exception.CommonErrorCode;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
+import io.github.ktg.ticketing.app.security.JwtAuthenticationFilter;
 
-@WebMvcTest(GlobalExceptionTestController.class)
+@WebMvcTest(value = GlobalExceptionTestController.class,
+    excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class))
+@AutoConfigureMockMvc(addFilters = false)
 @Import(ErrorCodeHttpStatusMapper.class)
 class GlobalExceptionHandlerTest {
 
     @Autowired
-    WebApplicationContext context;
-
     MockMvc mockMvc;
 
+    @Autowired
     ObjectMapper objectMapper;
-
-    @BeforeEach
-    void setUp() {
-        objectMapper = new ObjectMapper();
-        mockMvc = MockMvcBuilders
-            .webAppContextSetup(context)
-            .addFilters(new CharacterEncodingFilter("UTF-8", true))
-            .build();
-    }
 
     /**
      * Exception Handler 테스트
