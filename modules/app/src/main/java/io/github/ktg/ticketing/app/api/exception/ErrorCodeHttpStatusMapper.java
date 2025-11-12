@@ -20,7 +20,9 @@ public class ErrorCodeHttpStatusMapper {
     );
 
     private static final Map<ErrorCode, HttpStatus> CODE_DETAILS = Map.of(
-        UserErrorCode.EMAIL_DUPLICATED, HttpStatus.CONFLICT
+        UserErrorCode.EMAIL_DUPLICATED, HttpStatus.CONFLICT,
+        UserErrorCode.EMAIL_NOT_FOUND, HttpStatus.UNAUTHORIZED,
+        UserErrorCode.PASSWORD_NOT_MATCHED, HttpStatus.UNAUTHORIZED
     );
 
     /**
