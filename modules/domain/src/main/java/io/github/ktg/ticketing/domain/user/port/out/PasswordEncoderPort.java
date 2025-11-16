@@ -6,6 +6,6 @@ import io.github.ktg.ticketing.domain.user.model.PasswordHash;
 public interface PasswordEncoderPort {
 
     PasswordHash encode(Password password);
-    boolean matches(String password, String encodedPassword);
+    boolean matches(Password password, PasswordHash encodedPassword);
 
 }

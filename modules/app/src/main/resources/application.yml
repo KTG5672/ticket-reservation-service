@@ -9,9 +9,15 @@ spring:
       ddl-auto: validate
   flyway:
     locations: classpath:db/migration
+  application:
+    name: ticketing-service
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
+jwt:
+  secret-key: dGlja2V0aW5nLXNlcnZpY2UtYXV0aGVudGljYXRpb24=
+  expire-milliseconds: 1800000
+  clock-skew-seconds: 30

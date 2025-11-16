@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import io.github.ktg.ticketing.domain.user.exception.EmailNotValidException;
 import io.github.ktg.ticketing.domain.user.exception.PasswordNotValidException;
 import io.github.ktg.ticketing.domain.user.model.Email;
+import io.github.ktg.ticketing.domain.user.model.Password;
 import io.github.ktg.ticketing.domain.user.model.PasswordHash;
 import io.github.ktg.ticketing.domain.user.model.User;
 import io.github.ktg.ticketing.domain.user.port.in.SignInCommand;
@@ -48,14 +49,14 @@ class SignInServiceTest {
     void 로그인_시_액세스_토큰을_발급() {
         // given
         String email = "test@test.com";
-        String password = "test123";
+        String password = "test1234";
         String expectedUserId = "userId123";
         User expectedUser = User.withoutId(new Email(email), new PasswordHash(password))
             .withId(expectedUserId);
         SignInCommand signInCommand = new SignInCommand(email, password);
         when(tokenProvider.generateAccessToken(expectedUserId)).thenReturn("access_token");
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(expectedUser));
-        when(passwordEncoderPort.matches(password, expectedUser.getPassword().value())).thenReturn(true);
+        when(passwordEncoderPort.matches(new Password(password), expectedUser.getPassword())).thenReturn(true);
         // when
         SignInResult signInResult = signInService.signIn(signInCommand);
 
@@ -68,7 +69,7 @@ class SignInServiceTest {
     void 로그인_시_존재하지_않는_이메일_입력_시_에러() {
         // given
         String email = "test@test.com";
-        String password = "test123";
+        String password = "test1234";
         SignInCommand signInCommand = new SignInCommand(email, password);
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
         // when
@@ -83,13 +84,13 @@ class SignInServiceTest {
     void 로그인_시_패스워드_불일치_시_에러() {
         // given
         String email = "test@test.com";
-        String password = "test123";
+        String password = "test1234";
         String expectedUserId = "userId123";
         User expectedUser = User.withoutId(new Email(email), new PasswordHash(password))
             .withId(expectedUserId);
         SignInCommand signInCommand = new SignInCommand(email, password);
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(expectedUser));
-        when(passwordEncoderPort.matches(password, expectedUser.getPassword().value())).thenReturn(false);
+        when(passwordEncoderPort.matches(new Password(password), expectedUser.getPassword())).thenReturn(false);
         // when
         // then
         assertThatThrownBy(() -> signInService.signIn(signInCommand))

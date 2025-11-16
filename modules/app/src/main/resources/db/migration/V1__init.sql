@@ -1,6 +1,6 @@
 -- 유저
 CREATE TABLE users (
-    id VARCHAR(40) NOT NULL PRIMARY KEY,
+    id BINARY(16) NOT NULL PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(60) NOT NULL,
     created_by VARCHAR(40),

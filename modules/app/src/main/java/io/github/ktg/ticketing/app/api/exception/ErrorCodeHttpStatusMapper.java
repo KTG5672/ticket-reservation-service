@@ -1,5 +1,6 @@
 package io.github.ktg.ticketing.app.api.exception;
 
+import io.github.ktg.ticketing.app.security.SecurityErrorCode;
 import io.github.ktg.ticketing.common.exception.CommonErrorCode;
 import io.github.ktg.ticketing.common.exception.ErrorCode;
 import io.github.ktg.ticketing.domain.user.exception.UserErrorCode;
@@ -20,7 +21,11 @@ public class ErrorCodeHttpStatusMapper {
     );
 
     private static final Map<ErrorCode, HttpStatus> CODE_DETAILS = Map.of(
-        UserErrorCode.EMAIL_DUPLICATED, HttpStatus.CONFLICT
+        UserErrorCode.EMAIL_DUPLICATED, HttpStatus.CONFLICT,
+        UserErrorCode.EMAIL_NOT_FOUND, HttpStatus.UNAUTHORIZED,
+        UserErrorCode.PASSWORD_NOT_MATCHED, HttpStatus.UNAUTHORIZED,
+        SecurityErrorCode.UNAUTHORIZED, HttpStatus.UNAUTHORIZED,
+        SecurityErrorCode.FORBIDDEN, HttpStatus.FORBIDDEN
     );
 
     /**
