@@ -14,6 +14,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+/**
+ * AuthenticationEntryPoint 구현체
+ * - Security Filter 내부에서 AuthenticationException(미인증) 발생 시 401 응답
+ */
 @RequiredArgsConstructor
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
