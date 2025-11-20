@@ -1,6 +1,6 @@
 package io.github.ktg.ticketing.persistence.reservation.entity;
 
-import io.github.ktg.ticketing.domain.reservation.ReservationStatus;
+import io.github.ktg.ticketing.domain.reservation.model.ReservationStatus;
 import io.github.ktg.ticketing.persistence.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
