@@ -1,6 +1,6 @@
 package io.github.ktg.ticketing.domain.reservation.model;
 
-import io.github.ktg.ticketing.domain.event.model.EventSeat;
+import io.github.ktg.ticketing.domain.reservation.dto.SeatSnapshot;
 import io.github.ktg.ticketing.domain.reservation.exception.ReservationErrorCode;
 import io.github.ktg.ticketing.domain.reservation.exception.ReservationNotValidException;
 import io.github.ktg.ticketing.domain.reservation.exception.ReservationStatusNotValidException;
@@ -30,14 +30,14 @@ public class Reservation {
         this.seats = seats;
     }
 
-    private Reservation(String userId, ReservationStatus status, List<EventSeat> seats) {
+    private Reservation(String userId, ReservationStatus status, List<SeatSnapshot> seats) {
         this.userId = userId;
         this.status = status;
         this.seats = new ArrayList<>();
         if (seats == null || seats.isEmpty()) {
             throw new ReservationNotValidException(ReservationErrorCode.NOT_ENOUGH_RESERVE_SEATS);
         }
-        for (EventSeat seat : seats) {
+        for (SeatSnapshot seat : seats) {
             addEventSeat(seat);
         }
     }
@@ -49,12 +49,12 @@ public class Reservation {
      * @param seats  이벤트 좌석 List
      * @return Reservation 결제 대기 상태 예약
      */
-    public static Reservation createWaitingPayment(String userId, List<EventSeat> seats) {
+    public static Reservation createWaitingPayment(String userId, List<SeatSnapshot> seats) {
         return new Reservation(userId, ReservationStatus.WAITING_PAYMENT, seats);
     }
 
-    private void addEventSeat(EventSeat seat) {
-        seats.add(ReservationSeat.create(this, seat.getId(), seat.getPrice()));
+    private void addEventSeat(SeatSnapshot seat) {
+        seats.add(ReservationSeat.create(this, seat.id(), seat.price()));
     }
 
     /**
