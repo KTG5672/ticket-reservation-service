@@ -8,4 +8,5 @@ public class EventSeat {
     private Long id;
     private int price;
 
+    protected EventSeat() {}
 }
