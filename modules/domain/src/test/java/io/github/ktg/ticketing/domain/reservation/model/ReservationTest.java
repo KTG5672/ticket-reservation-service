@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.github.ktg.ticketing.domain.event.model.EventSeat;
+import io.github.ktg.ticketing.domain.event.model.MockEventSeatCreator;
 import io.github.ktg.ticketing.domain.reservation.exception.ReservationErrorCode;
 import io.github.ktg.ticketing.domain.reservation.exception.ReservationNotValidException;
 import io.github.ktg.ticketing.domain.reservation.exception.ReservationStatusNotValidException;
-import java.lang.reflect.Constructor;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class ReservationTest {
 
     @Test
     @DisplayName("예약 만료는 결제 대기 상태에서 가능")
-    void 예약_만료는_결제_대기_상태에서_가능() throws Exception {
+    void 예약_만료는_결제_대기_상태에서_가능() {
         // given
         String userId = "userId";
         Reservation reservation = Reservation.createWaitingPayment(userId, getMockEventSeats());
@@ -43,7 +43,7 @@ class ReservationTest {
 
     @Test
     @DisplayName("예약 만료는 결제 대기 상태가 아니면 불가능")
-    void 예약_만료는_결제_대기_상태가_아니면_불가능() throws Exception {
+    void 예약_만료는_결제_대기_상태가_아니면_불가능() {
         // given
         String userId = "userId";
         Reservation reservation = Reservation.createWaitingPayment(userId, getMockEventSeats());
@@ -59,7 +59,7 @@ class ReservationTest {
 
     @Test
     @DisplayName("예약 완료는 결제 대기 상태면 가능")
-    void 예약_완료는_결제_대기_상태면_가능() throws Exception {
+    void 예약_완료는_결제_대기_상태면_가능() {
         // given
         String userId = "userId";
         Reservation reservation = Reservation.createWaitingPayment(userId, getMockEventSeats());
@@ -71,7 +71,7 @@ class ReservationTest {
 
     @Test
     @DisplayName("예약 완료는 결제 대기 상태가 아니면 불가능")
-    void 예약_완료는_결제_대기_상태가_아니면_불가능() throws Exception {
+    void 예약_완료는_결제_대기_상태가_아니면_불가능() {
         // given
         String userId = "userId";
         Reservation reservation = Reservation.createWaitingPayment(userId, getMockEventSeats());
@@ -86,7 +86,7 @@ class ReservationTest {
 
     @Test
     @DisplayName("예약 취소는 결제 대기 상태 또는 완료 상태에서 가능")
-    void 예약_취소는_결제_대기_상태_또는_완료_상태에서_가능() throws Exception {
+    void 예약_취소는_결제_대기_상태_또는_완료_상태에서_가능() {
         // given
         String userId = "userId";
         Reservation waitingPaymentReservation = Reservation.createWaitingPayment(userId, getMockEventSeats());
@@ -102,7 +102,7 @@ class ReservationTest {
 
     @Test
     @DisplayName("예약 취소는 결제 대기 상태 또는 완료 상태가 아니면 불가능")
-    void 예약_취소는_결제_대기_상태_또는_완료_상태가_아니면_불가능() throws Exception {
+    void 예약_취소는_결제_대기_상태_또는_완료_상태가_아니면_불가능() {
         // given
         String userId = "userId";
         Reservation reservation = Reservation.createWaitingPayment(userId, getMockEventSeats());
@@ -115,11 +115,8 @@ class ReservationTest {
             .isEqualTo(ReservationErrorCode.INVALID_STATUS_FOR_CANCEL);
     }
 
-    List<EventSeat> getMockEventSeats() throws Exception {
-        Class<?> clazz = Class.forName("io.github.ktg.ticketing.domain.event.model.EventSeat");
-        Constructor<?> constructor = clazz.getConstructor();
-        constructor.setAccessible(true);
-        return List.of((EventSeat) constructor.newInstance(),
-            (EventSeat) constructor.newInstance());
+    List<EventSeat> getMockEventSeats() {
+        return List.of(MockEventSeatCreator.createEmptySeat(),
+            MockEventSeatCreator.createEmptySeat());
     }
 }
