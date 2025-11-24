@@ -12,6 +12,7 @@ import lombok.Getter;
  * 예약 도메인
  * - 예약 좌석 1개 이상이여야 하며 예약 생성 시에만 추가 가능
  * - 예약 상태 변경 기능 (예약 완료, 취소, 만료)
+ * - 식별자 포함 생성 메서드 제공
  */
 @Getter
 public class Reservation {
@@ -22,8 +23,14 @@ public class Reservation {
     private final List<ReservationSeat> seats;
 
     private Reservation(Long id, String userId, ReservationStatus status,
-        List<EventSeat> seats) {
+        List<ReservationSeat> seats) {
         this.id = id;
+        this.userId = userId;
+        this.status = status;
+        this.seats = seats;
+    }
+
+    private Reservation(String userId, ReservationStatus status, List<EventSeat> seats) {
         this.userId = userId;
         this.status = status;
         this.seats = new ArrayList<>();
@@ -43,7 +50,7 @@ public class Reservation {
      * @return Reservation 결제 대기 상태 예약
      */
     public static Reservation createWaitingPayment(String userId, List<EventSeat> seats) {
-        return new Reservation(null, userId, ReservationStatus.WAITING_PAYMENT, seats);
+        return new Reservation(userId, ReservationStatus.WAITING_PAYMENT, seats);
     }
 
     private void addEventSeat(EventSeat seat) {
@@ -97,6 +104,15 @@ public class Reservation {
     private boolean canCancel() {
         return status == ReservationStatus.WAITING_PAYMENT
             || status == ReservationStatus.COMPLETED;
+    }
+
+    /**
+     * 식별자를 포함하여 객체 생성
+     * @param id 예약 식별자
+     * @return Reservation 예약 도메인
+     */
+    public Reservation withId(Long id) {
+        return new Reservation(id, userId, status, seats);
     }
 
 }
