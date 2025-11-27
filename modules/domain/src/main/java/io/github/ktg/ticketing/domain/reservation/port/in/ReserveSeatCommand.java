@@ -7,6 +7,6 @@ import java.util.List;
  * @param userId 유저 식별자
  * @param eventSeatIds 예약할 이벤트 좌석 식별자 list
  */
-public record ReserveSeatCommand(String userId, List<Long> eventSeatIds) {
+public record ReserveSeatCommand(String userId, Long eventScheduleId, List<Long> eventSeatIds) {
 
 }
