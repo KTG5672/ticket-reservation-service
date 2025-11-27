@@ -30,8 +30,8 @@ public class EventScheduleJpaEntity extends BaseEntity {
     @Column(name = "event_start_at")
     private LocalDateTime eventStartAt;
 
-    @Column(name = "user_booking_limit")
-    private Integer userBookingLimit;
+    @Column(name = "max_reserve_per_user")
+    private Integer maxReservePerUser;
 
     @Column(name = "ticket_open_at")
     private LocalDateTime ticketOpenAt;

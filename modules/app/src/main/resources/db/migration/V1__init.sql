@@ -27,7 +27,7 @@ CREATE TABLE event_schedules (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     event_id BIGINT NOT NULL,
     event_start_at DATETIME,
-    user_booking_limit INT,
+    max_reserve_per_user INT,
     ticket_open_at DATETIME,
     ticket_close_at DATETIME,
     created_by VARCHAR(40),
