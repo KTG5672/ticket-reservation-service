@@ -33,4 +33,10 @@ public class EventScheduleJpaEntity extends BaseEntity {
     @Column(name = "user_booking_limit")
     private Integer userBookingLimit;
 
+    @Column(name = "ticket_open_at")
+    private LocalDateTime ticketOpenAt;
+
+    @Column(name = "ticket_close_at")
+    private LocalDateTime ticketCloseAt;
+
 }

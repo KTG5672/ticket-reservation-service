@@ -8,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Table(name = "events")
@@ -33,11 +32,5 @@ public class EventJpaEntity extends BaseEntity {
     @Lob
     @Column(name = "event_info", columnDefinition = "MEDIUMTEXT")
     private String eventInfo;
-
-    @Column(name = "ticket_open_at")
-    private LocalDateTime ticketOpenAt;
-
-    @Column(name = "ticket_close_at")
-    private LocalDateTime ticketCloseAt;
 
 }
