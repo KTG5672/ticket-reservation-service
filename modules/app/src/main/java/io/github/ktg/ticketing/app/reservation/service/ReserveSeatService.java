@@ -13,6 +13,7 @@ import io.github.ktg.ticketing.domain.reservation.port.out.EventScheduleQueryPor
 import io.github.ktg.ticketing.domain.reservation.port.out.EventSeatQueryPort;
 import io.github.ktg.ticketing.domain.reservation.port.out.ReservationRepository;
 import io.github.ktg.ticketing.domain.reservation.port.out.WaitingPaymentReservationStorePort;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class ReserveSeatService implements ReserveSeatUseCase {
     private final EventSeatQueryPort eventSeatQueryPort;
     private final EventScheduleQueryPort eventScheduleQueryPort;
     private final WaitingPaymentReservationStorePort waitingPaymentReservationStorePort;
-
+    private final Clock clock;
 
     /**
      * 좌석 예약
@@ -73,7 +74,7 @@ public class ReserveSeatService implements ReserveSeatUseCase {
     }
 
     private void validateTicketOpenClose(LocalDateTime ticketOpenAt, LocalDateTime ticketCloseAt) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(clock);
         if (now.isBefore(ticketOpenAt)) {
             throw new TicketSalePeriodException(ReservationErrorCode.TICKET_NOT_OPEN);
         }

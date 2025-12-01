@@ -19,7 +19,10 @@ import io.github.ktg.ticketing.domain.reservation.port.out.EventScheduleQueryPor
 import io.github.ktg.ticketing.domain.reservation.port.out.EventSeatQueryPort;
 import io.github.ktg.ticketing.domain.reservation.port.out.ReservationRepository;
 import io.github.ktg.ticketing.domain.reservation.port.out.WaitingPaymentReservationStorePort;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -50,7 +53,7 @@ class ReserveSeatServiceTest {
     @BeforeEach
     void setUp() {
         reserveSeatService = new ReserveSeatService(reservationRepository, eventSeatQueryPort,
-            eventScheduleQueryPort, waitingPaymentReservationStorePort);
+            eventScheduleQueryPort, waitingPaymentReservationStorePort, Clock.systemDefaultZone());
     }
 
     @Test
@@ -219,6 +222,68 @@ class ReserveSeatServiceTest {
 
         // then
         then(waitingPaymentReservationStorePort).should().store(reservationId, ReserveSeatService.WAITING_PAYMENT_EXPIRATION_MINUTES);
+    }
+
+    @Test
+    @DisplayName("예약 시 티켓 오픈 시간 정각이면 성공한다.")
+    void 예약_시_티켓_오픈_시간_정각이면_성공() {
+        // given
+        String userId = "user1234";
+        Long eventScheduleId = 1L;
+        List<Long> eventSeatIds = List.of(1L, 2L);
+        ReserveSeatCommand command = new ReserveSeatCommand(userId, eventScheduleId, eventSeatIds);
+        Clock fixedTime = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+        LocalDateTime ticketOpenAt = LocalDateTime.now(fixedTime);
+        LocalDateTime ticketCloseAt = ticketOpenAt.plusMinutes(5);
+        reserveSeatService = new ReserveSeatService(reservationRepository, eventSeatQueryPort,
+            eventScheduleQueryPort, waitingPaymentReservationStorePort, fixedTime);
+        List<SeatSnapshot> seats = List.of(
+            new SeatSnapshot(1L, 1000, true),
+            new SeatSnapshot(2L, 1000, true));
+        long reservationId = 1L;
+        Reservation waitingPayment = Reservation.createWaitingPayment(userId, seats);
+        Reservation saved = waitingPayment.withId(reservationId);
+
+        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt, 1));
+        when(eventSeatQueryPort.findBySeatIds(eventSeatIds)).thenReturn(seats);
+        when(reservationRepository.save(any(Reservation.class))).thenReturn(saved);
+
+        // when
+        ReserveSeatResult result = reserveSeatService.reserveSeats(command);
+
+        // then
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("예약 시 티켓 마감 시간 정각이면 성공한다.")
+    void 예약_시_티켓_마감_시간_정각이면_성공() {
+        // given
+        String userId = "user1234";
+        Long eventScheduleId = 1L;
+        List<Long> eventSeatIds = List.of(1L, 2L);
+        ReserveSeatCommand command = new ReserveSeatCommand(userId, eventScheduleId, eventSeatIds);
+        Clock fixedTime = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+        LocalDateTime ticketOpenAt = LocalDateTime.now(fixedTime).minusMinutes(5);
+        LocalDateTime ticketCloseAt = LocalDateTime.now(fixedTime);
+        reserveSeatService = new ReserveSeatService(reservationRepository, eventSeatQueryPort,
+            eventScheduleQueryPort, waitingPaymentReservationStorePort, fixedTime);
+        List<SeatSnapshot> seats = List.of(
+            new SeatSnapshot(1L, 1000, true),
+            new SeatSnapshot(2L, 1000, true));
+        long reservationId = 1L;
+        Reservation waitingPayment = Reservation.createWaitingPayment(userId, seats);
+        Reservation saved = waitingPayment.withId(reservationId);
+
+        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt, 1));
+        when(eventSeatQueryPort.findBySeatIds(eventSeatIds)).thenReturn(seats);
+        when(reservationRepository.save(any(Reservation.class))).thenReturn(saved);
+
+        // when
+        ReserveSeatResult result = reserveSeatService.reserveSeats(command);
+
+        // then
+        assertThat(result).isNotNull();
     }
 
 
