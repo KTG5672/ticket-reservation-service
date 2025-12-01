@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import io.github.ktg.ticketing.domain.reservation.dto.EventScheduleSnapshot;
 import io.github.ktg.ticketing.domain.reservation.dto.SeatSnapshot;
 import io.github.ktg.ticketing.domain.reservation.exception.ReservationErrorCode;
+import io.github.ktg.ticketing.domain.reservation.exception.ReservePerUserLimitException;
 import io.github.ktg.ticketing.domain.reservation.exception.SeatNotReservableException;
 import io.github.ktg.ticketing.domain.reservation.exception.TicketSalePeriodException;
 import io.github.ktg.ticketing.domain.reservation.model.Reservation;
@@ -17,6 +18,7 @@ import io.github.ktg.ticketing.domain.reservation.port.in.ReserveSeatCommand;
 import io.github.ktg.ticketing.domain.reservation.port.in.ReserveSeatResult;
 import io.github.ktg.ticketing.domain.reservation.port.out.EventScheduleQueryPort;
 import io.github.ktg.ticketing.domain.reservation.port.out.EventSeatQueryPort;
+import io.github.ktg.ticketing.domain.reservation.port.out.ReservationCountQueryPort;
 import io.github.ktg.ticketing.domain.reservation.port.out.ReservationRepository;
 import io.github.ktg.ticketing.domain.reservation.port.out.WaitingPaymentReservationStorePort;
 import java.time.Clock;
@@ -50,10 +52,14 @@ class ReserveSeatServiceTest {
     @Mock
     WaitingPaymentReservationStorePort waitingPaymentReservationStorePort;
 
+    @Mock
+    ReservationCountQueryPort reservationCountQueryPort;
+
     @BeforeEach
     void setUp() {
         reserveSeatService = new ReserveSeatService(reservationRepository, eventSeatQueryPort,
-            eventScheduleQueryPort, waitingPaymentReservationStorePort, Clock.systemDefaultZone());
+            eventScheduleQueryPort, waitingPaymentReservationStorePort, reservationCountQueryPort,
+            Clock.systemDefaultZone());
     }
 
     @Test
@@ -157,7 +163,7 @@ class ReserveSeatServiceTest {
         Reservation waitingPayment = Reservation.createWaitingPayment(userId, seats);
         Reservation withId = waitingPayment.withId(1L);
 
-        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt, 1));
+        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt, 3));
         when(eventSeatQueryPort.findBySeatIds(eventSeatIds)).thenReturn(seats);
         when(reservationRepository.save(any(Reservation.class))).thenReturn(withId);
 
@@ -183,7 +189,7 @@ class ReserveSeatServiceTest {
             new SeatSnapshot(2L, 1000, true));
         Reservation waitingPayment = Reservation.createWaitingPayment(userId, seats);
 
-        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt, 1));
+        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt, 3));
         when(eventSeatQueryPort.findBySeatIds(eventSeatIds)).thenReturn(seats);
         when(reservationRepository.save(any(Reservation.class))).thenReturn(waitingPayment);
 
@@ -213,7 +219,7 @@ class ReserveSeatServiceTest {
         Reservation waitingPayment = Reservation.createWaitingPayment(userId, seats);
         Reservation saved = waitingPayment.withId(reservationId);
 
-        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt, 1));
+        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt, 3));
         when(eventSeatQueryPort.findBySeatIds(eventSeatIds)).thenReturn(seats);
         when(reservationRepository.save(any(Reservation.class))).thenReturn(saved);
 
@@ -236,7 +242,7 @@ class ReserveSeatServiceTest {
         LocalDateTime ticketOpenAt = LocalDateTime.now(fixedTime);
         LocalDateTime ticketCloseAt = ticketOpenAt.plusMinutes(5);
         reserveSeatService = new ReserveSeatService(reservationRepository, eventSeatQueryPort,
-            eventScheduleQueryPort, waitingPaymentReservationStorePort, fixedTime);
+            eventScheduleQueryPort, waitingPaymentReservationStorePort, reservationCountQueryPort, fixedTime);
         List<SeatSnapshot> seats = List.of(
             new SeatSnapshot(1L, 1000, true),
             new SeatSnapshot(2L, 1000, true));
@@ -244,7 +250,7 @@ class ReserveSeatServiceTest {
         Reservation waitingPayment = Reservation.createWaitingPayment(userId, seats);
         Reservation saved = waitingPayment.withId(reservationId);
 
-        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt, 1));
+        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt, 3));
         when(eventSeatQueryPort.findBySeatIds(eventSeatIds)).thenReturn(seats);
         when(reservationRepository.save(any(Reservation.class))).thenReturn(saved);
 
@@ -267,7 +273,7 @@ class ReserveSeatServiceTest {
         LocalDateTime ticketOpenAt = LocalDateTime.now(fixedTime).minusMinutes(5);
         LocalDateTime ticketCloseAt = LocalDateTime.now(fixedTime);
         reserveSeatService = new ReserveSeatService(reservationRepository, eventSeatQueryPort,
-            eventScheduleQueryPort, waitingPaymentReservationStorePort, fixedTime);
+            eventScheduleQueryPort, waitingPaymentReservationStorePort, reservationCountQueryPort, fixedTime);
         List<SeatSnapshot> seats = List.of(
             new SeatSnapshot(1L, 1000, true),
             new SeatSnapshot(2L, 1000, true));
@@ -275,7 +281,7 @@ class ReserveSeatServiceTest {
         Reservation waitingPayment = Reservation.createWaitingPayment(userId, seats);
         Reservation saved = waitingPayment.withId(reservationId);
 
-        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt, 1));
+        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt, 3));
         when(eventSeatQueryPort.findBySeatIds(eventSeatIds)).thenReturn(seats);
         when(reservationRepository.save(any(Reservation.class))).thenReturn(saved);
 
@@ -286,5 +292,31 @@ class ReserveSeatServiceTest {
         assertThat(result).isNotNull();
     }
 
+    @Test
+    @DisplayName("")
+    void 예약할_좌석과_예약된_좌석의_합이_한_유저당_최대_예매_개수보다_초과면_실패() {
+        // given
+        String userId = "user1234";
+        Long eventScheduleId = 1L;
+        List<Long> eventSeatIds = List.of(1L, 2L);
+        ReserveSeatCommand command = new ReserveSeatCommand(userId, eventScheduleId, eventSeatIds);
+        LocalDateTime ticketOpenAt = LocalDateTime.now();
+        LocalDateTime ticketCloseAt = ticketOpenAt.plusMinutes(5);
+        List<SeatSnapshot> seats = List.of(
+            new SeatSnapshot(1L, 1000, true),
+            new SeatSnapshot(2L, 1000, true));
+
+        int maxReservePerUser = 3;
+        when(eventScheduleQueryPort.findById(eventScheduleId)).thenReturn(new EventScheduleSnapshot(1L, ticketOpenAt, ticketCloseAt,
+            maxReservePerUser));
+        when(eventSeatQueryPort.findBySeatIds(eventSeatIds)).thenReturn(seats);
+        when(reservationCountQueryPort.countReservedSeats(userId, eventScheduleId)).thenReturn(2);
+        // when
+        // then
+        assertThatThrownBy(() -> reserveSeatService.reserveSeats(command))
+            .isInstanceOf(ReservePerUserLimitException.class)
+            .extracting("errorCode").isEqualTo(ReservationErrorCode.RESERVE_PER_USER_LIMIT);
+
+    }
 
 }
