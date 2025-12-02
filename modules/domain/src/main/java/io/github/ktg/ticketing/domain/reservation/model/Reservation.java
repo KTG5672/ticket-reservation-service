@@ -54,7 +54,7 @@ public class Reservation {
     }
 
     private void addEventSeat(SeatSnapshot seat) {
-        seats.add(ReservationSeat.create(this, seat.id(), seat.price()));
+        seats.add(ReservationSeat.create(seat.id(), seat.price()));
     }
 
     /**
@@ -112,6 +112,18 @@ public class Reservation {
      * @return Reservation 예약 도메인
      */
     public Reservation withId(Long id) {
+        return new Reservation(id, userId, status, seats);
+    }
+
+    /**
+     * 예약 재구성 정적 메서드 (with ID)
+     * @param id 예약 식별자
+     * @param userId 유저 식별자
+     * @param status 예약 상태
+     * @param seats 예약 좌석 리스트
+     * @return Reservation
+     */
+    public static Reservation reconstruct(Long id, String userId, ReservationStatus status, List<ReservationSeat> seats) {
         return new Reservation(id, userId, status, seats);
     }
 
