@@ -16,6 +16,7 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
     runtimeOnly("com.mysql:mysql-connector-j")
 
@@ -26,4 +27,5 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
+    testImplementation("com.redis:testcontainers-redis:2.2.2")
 }
