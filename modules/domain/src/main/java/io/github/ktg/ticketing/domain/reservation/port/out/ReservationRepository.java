@@ -1,7 +1,6 @@
 package io.github.ktg.ticketing.domain.reservation.port.out;
 
 import io.github.ktg.ticketing.domain.reservation.model.Reservation;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -10,7 +9,6 @@ import java.util.Optional;
 public interface ReservationRepository {
 
     Optional<Reservation> findById(Long reservationId);
-    List<Reservation> findByEventSeatIds(List<Long> eventSeatIds);
     Reservation save(Reservation reservation);
 
 }

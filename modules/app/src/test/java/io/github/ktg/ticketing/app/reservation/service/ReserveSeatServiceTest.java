@@ -22,6 +22,7 @@ import io.github.ktg.ticketing.domain.reservation.port.out.ReservationCountQuery
 import io.github.ktg.ticketing.domain.reservation.port.out.ReservationRepository;
 import io.github.ktg.ticketing.domain.reservation.port.out.WaitingPaymentReservationStorePort;
 import java.time.Clock;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -227,7 +228,7 @@ class ReserveSeatServiceTest {
         reserveSeatService.reserveSeats(command);
 
         // then
-        then(waitingPaymentReservationStorePort).should().store(reservationId, ReserveSeatService.WAITING_PAYMENT_EXPIRATION_MINUTES);
+        then(waitingPaymentReservationStorePort).should().store(reservationId, Duration.ofMinutes(ReserveSeatService.WAITING_PAYMENT_EXPIRATION_MINUTES));
     }
 
     @Test

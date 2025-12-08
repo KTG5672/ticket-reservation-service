@@ -16,6 +16,7 @@ import io.github.ktg.ticketing.domain.reservation.port.out.ReservationCountQuery
 import io.github.ktg.ticketing.domain.reservation.port.out.ReservationRepository;
 import io.github.ktg.ticketing.domain.reservation.port.out.WaitingPaymentReservationStorePort;
 import java.time.Clock;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +72,8 @@ public class ReserveSeatService implements ReserveSeatUseCase {
         Reservation saved = reservationRepository.save(waitingPayment);
 
         Long reservationId = saved.getId();
-        waitingPaymentReservationStorePort.store(reservationId, WAITING_PAYMENT_EXPIRATION_MINUTES);
+        waitingPaymentReservationStorePort.store(reservationId,
+            Duration.ofMinutes(WAITING_PAYMENT_EXPIRATION_MINUTES));
         return new ReserveSeatResult(reservationId);
     }
 
